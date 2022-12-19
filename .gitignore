@@ -1,2 +1,7 @@
-*.class
+.bsp
+.idea
+*.iml
+sbt.json
+target
+.metals
 *.log
