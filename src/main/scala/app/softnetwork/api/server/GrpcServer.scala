@@ -7,6 +7,7 @@ import akka.http.scaladsl.Http
 import app.softnetwork.config.Settings
 import app.softnetwork.persistence.launch.PersistenceGuardian
 import app.softnetwork.persistence.query.SchemaProvider
+import app.softnetwork.persistence.typed._
 import com.typesafe.scalalogging.StrictLogging
 
 import scala.concurrent.ExecutionContextExecutor
@@ -16,7 +17,6 @@ trait GrpcServer extends PersistenceGuardian with Server with StrictLogging {
   _: GrpcServices with SchemaProvider =>
 
   override def startSystem: ActorSystem[_] => Unit = system => {
-    import app.softnetwork.persistence.typed._
 
     implicit val classicSystem: classic.ActorSystem = system
 
