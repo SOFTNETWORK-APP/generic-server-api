@@ -3,10 +3,11 @@ package app.softnetwork.api.server
 import akka.http.scaladsl.model.{HttpResponse, StatusCodes}
 import akka.http.scaladsl.server.{Directives, Route}
 import app.softnetwork.serialization._
-import de.heikoseeberger.akkahttpjson4s.Json4sSupport
+import de.heikoseeberger.akkahttpjson4s.Json4sSupport._
 import org.json4s.Formats
 
 import scala.concurrent.Future
+import scala.language.implicitConversions
 import scala.util.{Failure, Success, Try}
 
 /** @author
@@ -14,17 +15,16 @@ import scala.util.{Failure, Success, Try}
   * @author
   *   smanciot
   */
-trait DefaultComplete { this: Directives ⇒
+trait DefaultComplete { this: Directives =>
 
   implicit def formats: Formats
 
-  def handleCall[T](call: ⇒ T, handler: T ⇒ Route): Route = {
-    import Json4sSupport._
+  def handleCall[T](call: => T, handler: T => Route): Route = {
     Try(call) match {
-      case Failure(t: ServerException) ⇒
+      case Failure(t: ServerException) =>
         t.printStackTrace()
         complete(t.code -> Map('type -> t.getClass.getSimpleName, 'error -> t.toString))
-      case Failure(t: Throwable) ⇒
+      case Failure(t: Throwable) =>
         t.printStackTrace()
         complete(
           StatusCodes.InternalServerError -> Map(
@@ -32,14 +32,13 @@ trait DefaultComplete { this: Directives ⇒
             'error -> t.toString
           )
         )
-      case Success(s) ⇒ handler(s)
+      case Success(s) => handler(s)
     }
   }
 
-  def handleComplete[T](call: Try[Try[T]], handler: T ⇒ Route): Route = {
-    import Json4sSupport._
+  def handleComplete[T](call: Try[Try[T]], handler: T => Route): Route = {
     call match {
-      case Failure(t) ⇒
+      case Failure(t) =>
         t.printStackTrace()
         complete(
           StatusCodes.InternalServerError -> Map(
@@ -47,13 +46,13 @@ trait DefaultComplete { this: Directives ⇒
             'error -> t.toString
           )
         )
-      case Success(res) ⇒
+      case Success(res) =>
         res match {
-          case Success(id) ⇒ handler(id)
-          case Failure(t: ServerException) ⇒
+          case Success(id) => handler(id)
+          case Failure(t: ServerException) =>
             t.printStackTrace()
             complete(t.code -> Map('type -> t.getClass.getSimpleName, 'error -> t.toString))
-          case Failure(t) ⇒
+          case Failure(t) =>
             t.printStackTrace()
             complete(
               StatusCodes.InternalServerError -> Map(
@@ -64,8 +63,6 @@ trait DefaultComplete { this: Directives ⇒
         }
     }
   }
-
-  import scala.language.implicitConversions
 
   implicit class CompleteWith[T](future: Future[T]) {
     def completeWith(fun: T => Route): Route =

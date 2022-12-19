@@ -7,6 +7,7 @@ import akka.{actor => classic, Done}
 import app.softnetwork.config.Settings
 import app.softnetwork.persistence.launch.PersistenceGuardian
 import app.softnetwork.persistence.query.SchemaProvider
+import app.softnetwork.persistence.typed._
 
 import scala.concurrent.ExecutionContextExecutor
 import scala.util.{Failure, Success}
@@ -16,7 +17,6 @@ import scala.util.{Failure, Success}
 trait ApiServer extends PersistenceGuardian with Server { _: ApiRoutes with SchemaProvider =>
 
   override def startSystem: ActorSystem[_] => Unit = system => {
-    import app.softnetwork.persistence.typed._
 
     implicit val classicSystem: classic.ActorSystem = system
 

@@ -21,7 +21,7 @@ trait MockServer extends Completion with StrictLogging {
 
   protected def stop(): Future[Done]
 
-  final def initMockServer(): Boolean = {
+  final def init(): Boolean = {
     val started = start()
     if (started) {
       logger.info(s"Mock Server $name started")
