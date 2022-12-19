@@ -9,7 +9,7 @@ trait ServerTestKit extends Server { _: PersistenceTestKit =>
 
   override lazy val interface: String = hostname
 
-  override def port: Int = {
+  override lazy val port: Int = {
     val socket = new ServerSocket(0)
     val port = socket.getLocalPort
     socket.close()
