@@ -6,22 +6,24 @@ import akka.http.scaladsl.model.headers.RawHeader
 import akka.http.scaladsl.model.{HttpResponse, StatusCodes}
 import akka.http.scaladsl.server.{Directives, ExceptionHandler, Route}
 import app.softnetwork.persistence.version
-import com.typesafe.scalalogging.StrictLogging
 import org.json4s.Formats
 import app.softnetwork.serialization._
+import org.slf4j.Logger
 
 import scala.util.{Failure, Success, Try}
 
 /** Created by smanciot on 19/04/2021.
   */
-trait ApiRoutes extends Directives with GrpcServices with DefaultComplete with StrictLogging {
+trait ApiRoutes extends Directives with GrpcServices with DefaultComplete {
 
   override implicit def formats: Formats = commonFormats
+
+  def log: Logger
 
   val timeoutExceptionHandler: ExceptionHandler =
     ExceptionHandler { case e: TimeoutException =>
       extractUri { uri =>
-        logger.error(
+        log.error(
           s"Request to $uri could not be handled normally -> ${e.getMessage}",
           e.getCause
         )
@@ -40,7 +42,7 @@ trait ApiRoutes extends Directives with GrpcServices with DefaultComplete with S
           ) match {
             case Success(s) => s
             case Failure(f) =>
-              logger.error(f.getMessage, f.getCause)
+              log.error(f.getMessage, f.getCause)
               complete(
                 HttpResponse(
                   StatusCodes.InternalServerError,

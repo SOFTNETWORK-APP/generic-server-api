@@ -5,11 +5,13 @@ import akka.actor.CoordinatedShutdown
 import akka.actor.typed.ActorSystem
 import app.softnetwork.concurrent.Completion
 import app.softnetwork.persistence.typed._
-import com.typesafe.scalalogging.StrictLogging
+import org.slf4j.Logger
 
 import scala.concurrent.{ExecutionContext, Future}
 
-trait MockServer extends Completion with StrictLogging {
+trait MockServer extends Completion {
+
+  def log: Logger
 
   def name: String
 
@@ -24,14 +26,14 @@ trait MockServer extends Completion with StrictLogging {
   final def init(): Boolean = {
     val started = start()
     if (started) {
-      logger.info(s"Mock Server $name started")
+      log.info(s"Mock Server $name started")
       implicit val classicSystem: _root_.akka.actor.ActorSystem = system
       val shutdown = CoordinatedShutdown(classicSystem)
       shutdown.addTask(
         CoordinatedShutdown.PhaseServiceRequestsDone,
         s"$name-graceful-terminate"
       ) { () =>
-        logger.info(s"Stopping Mock Server $name ...")
+        log.info(s"Stopping Mock Server $name ...")
         stop()
       }
     }

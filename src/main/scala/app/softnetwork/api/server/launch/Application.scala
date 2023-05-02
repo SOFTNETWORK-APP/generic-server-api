@@ -9,10 +9,11 @@ import com.typesafe.config.ConfigFactory
   */
 trait Application extends App with ApiServer with Completion { _: ApiRoutes =>
 
-  private[this] val systemName = appConfig.getString("clustering.cluster.name")
+  lazy val config =
+    ConfigFactory.load().withFallback(ConfigFactory.load("softnetwork-api-server.conf"))
 
-  lazy val appConfig = ConfigFactory.load()
+  private[this] val systemName = config.getString("clustering.cluster.name")
 
-  ActorSystem(setup(), systemName, appConfig)
+  ActorSystem(setup(), systemName, config)
 
 }

@@ -7,12 +7,11 @@ import akka.http.scaladsl.Http
 import app.softnetwork.config.Settings
 import app.softnetwork.persistence.launch.PersistenceGuardian
 import app.softnetwork.persistence.typed._
-import com.typesafe.scalalogging.StrictLogging
 
 import scala.concurrent.ExecutionContextExecutor
 import scala.util.{Failure, Success}
 
-trait GrpcServer extends PersistenceGuardian with Server with StrictLogging {
+trait GrpcServer extends PersistenceGuardian with Server {
   _: GrpcServices =>
 
   override def startSystem: ActorSystem[_] => Unit = system => {
