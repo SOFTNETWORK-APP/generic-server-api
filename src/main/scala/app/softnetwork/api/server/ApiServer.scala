@@ -3,10 +3,9 @@ package app.softnetwork.api.server
 import akka.actor.CoordinatedShutdown
 import akka.actor.typed.ActorSystem
 import akka.http.scaladsl.Http
-import akka.{Done, actor => classic}
+import akka.{actor => classic, Done}
 import app.softnetwork.config.Settings
 import app.softnetwork.persistence.launch.PersistenceGuardian
-import app.softnetwork.persistence.schema.SchemaProvider
 import app.softnetwork.persistence.typed._
 
 import scala.concurrent.ExecutionContextExecutor
@@ -14,7 +13,7 @@ import scala.util.{Failure, Success}
 
 /** Created by smanciot on 25/04/2020.
   */
-trait ApiServer extends PersistenceGuardian with Server { _: ApiRoutes with SchemaProvider =>
+trait ApiServer extends PersistenceGuardian with Server { _: ApiRoutes =>
 
   override def startSystem: ActorSystem[_] => Unit = system => {
 

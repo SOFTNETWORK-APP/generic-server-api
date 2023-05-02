@@ -3,12 +3,11 @@ package app.softnetwork.api.server.launch
 import akka.actor.typed.ActorSystem
 import app.softnetwork.api.server.{ApiRoutes, ApiServer}
 import app.softnetwork.concurrent.Completion
-import app.softnetwork.persistence.schema.SchemaProvider
 import com.typesafe.config.ConfigFactory
 
 /** Created by smanciot on 22/03/2018.
   */
-trait Application extends App with ApiServer with Completion { _: ApiRoutes with SchemaProvider =>
+trait Application extends App with ApiServer with Completion { _: ApiRoutes =>
 
   private[this] val systemName = appConfig.getString("clustering.cluster.name")
 

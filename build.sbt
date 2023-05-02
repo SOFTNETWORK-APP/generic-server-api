@@ -31,7 +31,7 @@ ThisBuild / organization := "app.softnetwork.api"
 
 name := "generic-server-api"
 
-ThisBuild / version := "0.3.0"
+ThisBuild / version := "0.3.0.1"
 
 ThisBuild / scalaVersion := "2.12.15"
 
