@@ -3,7 +3,7 @@ package app.softnetwork.api.server.launch
 import akka.actor.typed.ActorSystem
 import app.softnetwork.api.server.{ApiRoutes, ApiServer}
 import app.softnetwork.concurrent.Completion
-import app.softnetwork.persistence.query.SchemaProvider
+import app.softnetwork.persistence.schema.SchemaProvider
 import com.typesafe.config.ConfigFactory
 
 /** Created by smanciot on 22/03/2018.

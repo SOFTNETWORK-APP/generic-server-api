@@ -1,12 +1,12 @@
 package app.softnetwork.api.server
 
-import akka.{actor => classic, Done}
+import akka.{Done, actor => classic}
 import akka.actor.CoordinatedShutdown
 import akka.actor.typed.ActorSystem
 import akka.http.scaladsl.Http
 import app.softnetwork.config.Settings
 import app.softnetwork.persistence.launch.PersistenceGuardian
-import app.softnetwork.persistence.query.SchemaProvider
+import app.softnetwork.persistence.schema.SchemaProvider
 import app.softnetwork.persistence.typed._
 import com.typesafe.scalalogging.StrictLogging
 
