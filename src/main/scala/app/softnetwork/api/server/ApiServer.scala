@@ -6,6 +6,7 @@ import akka.http.scaladsl.Http
 import akka.{actor => classic, Done}
 import app.softnetwork.config.Settings
 import app.softnetwork.persistence.launch.PersistenceGuardian
+import app.softnetwork.persistence.schema.SchemaProvider
 import app.softnetwork.persistence.typed._
 
 import scala.concurrent.ExecutionContextExecutor
@@ -13,7 +14,7 @@ import scala.util.{Failure, Success}
 
 /** Created by smanciot on 25/04/2020.
   */
-trait ApiServer extends PersistenceGuardian with Server { _: ApiRoutes =>
+trait ApiServer extends PersistenceGuardian with Server { _: SchemaProvider with ApiRoutes =>
 
   override def startSystem: ActorSystem[_] => Unit = system => {
 

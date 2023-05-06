@@ -6,13 +6,14 @@ import akka.actor.typed.ActorSystem
 import akka.http.scaladsl.Http
 import app.softnetwork.config.Settings
 import app.softnetwork.persistence.launch.PersistenceGuardian
+import app.softnetwork.persistence.schema.SchemaProvider
 import app.softnetwork.persistence.typed._
 
 import scala.concurrent.ExecutionContextExecutor
 import scala.util.{Failure, Success}
 
 trait GrpcServer extends PersistenceGuardian with Server {
-  _: GrpcServices =>
+  _: SchemaProvider with GrpcServices =>
 
   override def startSystem: ActorSystem[_] => Unit = system => {
 
