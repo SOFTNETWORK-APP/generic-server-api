@@ -9,7 +9,7 @@ import app.softnetwork.api.server.scalatest.ServerTestKit
 import app.softnetwork.api.server.{ApiRoutes, ApiServer}
 import app.softnetwork.config.Settings
 import app.softnetwork.persistence.scalatest.{InMemoryPersistenceTestKit, PersistenceTestKit}
-import app.softnetwork.persistence.schema.SchemaProvider
+import app.softnetwork.persistence.schema.Schema
 import app.softnetwork.persistence.typed._
 import de.heikoseeberger.akkahttpjson4s.Json4sSupport
 import org.scalatest.exceptions.TestFailedException
@@ -24,7 +24,7 @@ trait PersistenceScalatestRouteTest
     with RouteTest
     with TestFrameworkInterface
     with ScalatestUtils
-    with Json4sSupport { this: Suite with ApiRoutes with SchemaProvider =>
+    with Json4sSupport { this: Suite with ApiRoutes with Schema =>
 
   override protected def createActorSystem(): ActorSystem = {
     typedSystem()
